@@ -40,4 +40,5 @@ spec:
         - name: busybox
           image: busybox:latest
           volumeMounts:
-            - name: vpro-db-data
+            - mountPath: /var/lib/mysql  # Add a mountPath here
+              name: vpro-db-data
