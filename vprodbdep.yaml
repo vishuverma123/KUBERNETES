@@ -29,8 +29,8 @@ spec:
                 secretKeyRef:
                   name: app-secret
                   key: db-pass
-      nodeSelector:
-        zone: ap-south-1a
+      nodeSelector: {}
+      
       volumes:
         - name: vpro-db-data
           awsElasticBlockStore:
