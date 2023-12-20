@@ -1,49 +1,43 @@
 apiVersion: apps/v1
-kind: deployment
+kind: Deployment
 metadata:
   name: vprodb
-  labels: 
+  labels:
     app: vprodb
-spec: 
-  selector: 
-    matchLables:
+spec:
+  selector:
+    matchLabels:
       app: vprodb
-replicas: 1
-template:
-  metadata:
-    labels:
-      app: vprodb
-  spec:
-    containers: 
-    - name: vprodb
-      image: vprofile/vprofiledb:V1
-      volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: vpro-db-data
-      ports:
-        - name: vprodb-port
-          containerPort: 3306
-      env:
-  - name: MYSQL_ROOT_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: app-secret
-        key: db-pass
-nodeSelector:
-  zone: ap-south-1a
-volumes:
-  - name: vpro-db-data
-    awsElasticBlockstore:
-      volumeID: vol-0a185308863cbbff6
-      fsType: ext4  # Add the file system type here
-
-initContainers:
-  - name: busybox
-    image: busybox:latest
-    volumeMounts:
-      - name: vpro-db-data
-
-
-
-        
-              
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vprodb
+    spec:
+      containers:
+        - name: vprodb
+          image: vprofile/vprofiledb:V1
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: vpro-db-data
+          ports:
+            - name: vprodb-port
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: db-pass
+      nodeSelector:
+        zone: ap-south-1a
+      volumes:
+        - name: vpro-db-data
+          awsElasticBlockStore:
+            volumeID: vol-0a185308863cbbff6
+            fsType: ext4  # Add the file system type here
+      initContainers:
+        - name: busybox
+          image: busybox:latest
+          volumeMounts:
+            - name: vpro-db-data
