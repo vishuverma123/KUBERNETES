@@ -15,30 +15,17 @@ spec:
         app: vprodb
     spec:
       containers:
-        - name: vprodb
-          image: vprofile/vprofiledb:V1
-          volumeMounts:
-            - mountPath: /var/lib/mysql
-              name: vpro-db-data
-          ports:
-            - name: vprodb-port
-              containerPort: 3306
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: db-pass
-      nodeSelector: {}
-      
-      volumes:
-        - name: vpro-db-data
-          awsElasticBlockStore:
-            volumeID: vol-0f4a5565bd30e7b60
-            fsType: ext4  # Add the file system type here
-      initContainers:
-        - name: busybox
-          image: busybox:latest
-          volumeMounts:
-            - mountPath: /var/lib/mysql  # Add a mountPath here
-              name: vpro-db-data
+      - name: vprodb
+        image: vprofile/vprofiledb
+        ports:
+        - name: vprodb-port
+          containerPort: 3306
+        env: 
+         - name: MYSQL_ROOT_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: app-secret
+               key: db-pass
+#        env:
+#         - name: MYSQL_ROOT_PASSWORD
+#           value: "vprodbpass"
