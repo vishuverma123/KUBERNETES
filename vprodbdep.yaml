@@ -20,12 +20,25 @@ spec:
         ports:
         - name: vprodb-port
           containerPort: 3306
-        env: 
-         - name: MYSQL_ROOT_PASSWORD
-           valueFrom:
-             secretKeyRef:
-               name: app-secret
-               key: db-pass
-#        env:
-#         - name: MYSQL_ROOT_PASSWORD
-#           value: "vprodbpass"
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-pass
+  nodeSelector: 
+    zone: ap-south-1a
+  volumes:
+    - name: vpro-db-data
+      awsElasticBlockstore:
+        volumeID: vol-03068fa17bb83ed6a
+        fsType
+
+  InitContainers:
+    - name: busybox
+      image: busybox:latest
+      volumeMounts:
+        - name: vpro-db-data
+
+
+        
